@@ -1,0 +1,271 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer/app-drawer.html">
+<link rel="import" href="../bower_components/app-layout/app-drawer-layout/app-drawer-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-header/app-header.html">
+<link rel="import" href="../bower_components/app-layout/app-header-layout/app-header-layout.html">
+<link rel="import" href="../bower_components/app-layout/app-scroll-effects/app-scroll-effects.html">
+<link rel="import" href="../bower_components/app-layout/app-toolbar/app-toolbar.html">
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/iron-selector/iron-selector.html">
+<link rel="import" href="../bower_components/paper-icon-button/paper-icon-button.html">
+<link rel="import" href="../bower_components/paper-button/paper-button.html">
+
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+
+
+<link rel="import" href="my-icons.html">
+
+<dom-module id="mobile-app">
+  <template>
+    <style>
+      :host {
+        --app-primary-color: #4285f4;
+        --app-secondary-color: black;
+
+        display: block;
+      }
+
+      :host([page=faceswap]) .menu_btn {
+        display: none;
+      }
+      :host([page=tickets]) .menu_btn {
+        display: none;
+      }
+
+      :host(:not([page=faceswap])) .back_btn {
+        display: none;
+      }
+
+      :host(:not([page=tickets])) .ticket_back_btn {
+        display: none;
+      }
+
+      app-header {
+        color: #fff;
+        background-color: var(--app-primary-color);
+      }
+      app-header paper-icon-button {
+        --paper-icon-button-ink-color: white;
+      }
+
+      .drawer-list {
+        margin: 0 20px;
+      }
+
+      .drawer-list a {
+        display: block;
+        padding: 0 16px;
+        text-decoration: none;
+        color: var(--app-secondary-color);
+        line-height: 40px;
+      }
+
+      .drawer-list a.iron-selected {
+        color: black;
+        font-weight: bold;
+      }
+    </style>
+
+    <firebase-auth  id="auth"
+                    user="{{user}}"
+                    status-known="{{statusKnown}}"
+                    signed-in='{{fbSignIn}}'
+                    on-error="_handleError"
+                    app-name="comm">
+    </firebase-auth>
+
+    <firebase-document
+      app-name="comm"
+      path="/requestExperience"
+      data="{{requestExperience}}"></firebase-document>
+
+      <firebase-document
+        app-name="comm"
+        path="/playTrailer/id"
+        data="{{routeDataLast}}"></firebase-document>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/:page"
+        data="{{routeData}}"
+        tail="{{subroute}}"></app-route>
+
+    <app-drawer-layout fullbleed force-narrow="true">
+      <!-- Drawer content -->
+      <app-drawer id="drawer" >
+        <app-toolbar>Menu</app-toolbar>
+        <iron-selector selected="[[page]]" attr-for-selected="name" class="drawer-list" role="navigation">
+          <a name="home" href="/home">Select Movie</a>
+          <a name="movie" href="/movie">Movie Details</a>
+        </iron-selector>
+      </app-drawer>
+
+      <!-- Main content -->
+      <app-header-layout has-scrolling-region>
+
+        <app-header condenses reveals effects="waterfall">
+          <app-toolbar>
+            <paper-icon-button class="menu_btn" icon="my-icons:menu" drawer-toggle></paper-icon-button>
+            <a class="back_btn" href="/movie" tabindex="-1">
+                <paper-icon-button id="backExperience" icon="my-icons:arrow-back"></paper-icon-button>
+            </a>
+            <a class="ticket_back_btn" href="/movie" tabindex="-1">
+                <paper-icon-button icon="my-icons:arrow-back"></paper-icon-button>
+            </a>
+            <div main-title>Experiential Film Preview</div>
+          </app-toolbar>
+        </app-header>
+
+        <iron-pages
+            selected="[[page]]"
+            attr-for-selected="name"
+            fallback-selection="view404"
+            role="main">
+          <my-home name="home" socket-io="{{socketIo}}"></my-home>
+          <my-movie id="myMovie" name="movie" socket-io="{{socketIo}}"></my-movie>
+          <my-faceswap name="faceswap" socket-io="{{socketIo}}"></my-faceswap>
+          <my-tickets name="tickets" socket-io="{{socketIo}}"></my-tickets>
+          <my-view3 name="view3"></my-view3>
+          <my-view404 name="view404"></my-view404>
+        </iron-pages>
+      </app-header-layout>
+    </app-drawer-layout>
+  </template>
+
+  <script>
+
+    // var socket = io.connect();
+    //
+    // socket.on('working', function (data) {
+    //   console.log('Working: ' + data.hello);
+    // });
+    //
+    // socket.on('updateMediaPlaylist', function (data) {
+    //   console.log('From Server ');
+    //   console.log(data);
+    // });
+
+    Polymer({
+      is: 'mobile-app',
+
+      ready: function() {
+        // this.socketIo.on('working', function (data) {
+        //   console.log('Working: ' + data.hello);
+        // });
+        this.set('routeDataLast', 0);
+      },
+
+      properties: {
+        page: {
+          type: String,
+          reflectToAttribute: true,
+          observer: '_pageChanged',
+        },
+        socketIo:{
+          type: Object,
+          notify: true,
+          // value: io.connect()
+        },
+        routeDataLast: {
+          type: Object,
+          value: 0
+        },
+        experienceRequest:{
+          type: String,
+          notify: true,
+          value: "",
+          observer: '_experienceRequestChanged'
+        },
+        firebaseSetup: {
+          type: Object,
+          value: {
+            user: "jody@conexustech.com",
+            pass: "Asdf2468",
+            uid: "sR4LhrzZJlO6EyvelLjwJ5AwPNy2",
+            location: "https://exp-promo-demo.firebaseio.com"
+          }
+        },
+        fbSignIn: {
+          type: Boolean,
+          notify: true,
+          observer: '_signInFirebase'
+        },
+        requestExperience:{
+          type: String,
+          value: 'end',
+          notify: true
+        }
+      },
+
+      observers: [
+        '_routePageChanged(routeData.page)',
+        '_subrouteIdChanged(subroute)'
+      ],
+
+      listeners:{
+        "backExperience.tap": '_endExperience'
+      },
+
+      _experienceRequestChanged: function (d) {
+        // console.log('mobile-app - requestExperience: '+  d);
+      },
+
+      _subrouteIdChanged: function (subroute) {
+        var id = subroute.path.substr(-1);
+        if(id.length > 0) this.set('routeDataLast', id);
+        else this.set('routeDataLast', 0);
+      },
+
+      _routePageChanged: function(page) {
+        this.page = page || 'home';
+
+        if (!this.$.drawer.persistent) {
+          this.$.drawer.close();
+        }
+      },
+
+      _endExperience: function () {
+        // console.log("reqEND");
+        this.set('requestExperience', 'end');
+        // this.socketIo.emit('requestEndExperience', 'req end exp');
+      },
+
+      _pageChanged: function(page) {
+        // Load page import on demand. Show 404 page if fails
+        var resolvedPageUrl = this.resolveUrl('my-' + page + '.html');
+        this.importHref(resolvedPageUrl, null, this._showPage404, true);
+      },
+
+      _showPage404: function() {
+        this.page = 'view404';
+      },
+
+      //firebase sign in
+      _signInFirebase: function (signedIn){
+        // console.log('signed in?');
+        // console.log(signedIn);
+        if(!signedIn){
+          this.$.auth.signInWithEmailAndPassword(this.firebaseSetup.user, this.firebaseSetup.pass);
+        }
+      },
+      _handleError: function (error) {
+        console.log('FB error');
+        console.log(error);
+
+      }
+    });
+  </script>
+</dom-module>
