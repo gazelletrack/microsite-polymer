@@ -1,0 +1,238 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<dom-module id="movie-detail-data">
+
+  <script>
+  (function() {
+
+    var movies = [
+      {
+        id: "1",
+        title: {
+          name: "Pirates of the Caribbean: Dead Men Tell No Tales",
+          img: "https://www.mycinemovies.com/wp-content/uploads/2017/03/rich_potc5_header_1_c96068b3.jpeg"
+        },
+        director: " Joachim Rønning",
+        cast: [
+          {
+            firstName: "Johnny",
+            lastName: "Depp",
+            as: "Captain Jack Sparrow",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTM0ODU5Nzk2OV5BMl5BanBnXkFtZTcwMzI2ODgyNQ@@._V1_UY317_CR4,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Javier",
+            lastName: "Bardem",
+            as: "Captain Salazar",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTY1NTc4NTYzMF5BMl5BanBnXkFtZTcwNDIwOTY1NA@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Geoffrey",
+            lastName: "Rush",
+            as: "Captain Hector Barbossa",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTg2MjkxNDU0NV5BMl5BanBnXkFtZTcwOTk3MDQ0NA@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Brenton",
+            lastName: "Thwaites",
+            as: "Henry Turner",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTcwMTY3MjE5NF5BMl5BanBnXkFtZTcwNzM3NjU2Ng@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Kaya",
+            lastName: "Scodelario",
+            as: "Carina Smyth",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BNjk5NjE5NTczMV5BMl5BanBnXkFtZTcwODI0OTM0NA@@._V1_UY317_CR4,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Kevin",
+            lastName: "McNally",
+            as: "Gibbs",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTQ2NzMzMjYwOV5BMl5BanBnXkFtZTcwMDkzOTk2OQ@@._V1_UY317_CR17,0,214,317_AL_.jpg"
+          }
+        ],
+        trailers: [
+          "https://www.youtube.com/embed/i2_6L7u578Q",
+          "https://www.youtube.com/embed/XibzC-e_s5M",
+          "https://www.youtube.com/embed/tMHBNiibwy8"
+        ],
+        mainTrailer: "../images/POTC Trailer.mp4",
+        experience:{
+          title: "What would you look like as Jack Sparrow?",
+          message: "Press below to create a personalized Pirates of the Caribbean movie poster!"
+        }
+      },
+      {
+        id: "2",
+        title: {
+          name: "King Arthur: Legend of the Sword",
+          img: "http://www.scott-bono.com/wp-content/uploads/2015/02/KingArthureLegendOfTheSword-1200x600.jpg"
+        },
+        director: "Guy Ritchie",
+        cast: [
+          {
+            firstName: "Charlie",
+            lastName: "Hunnam",
+            as: "Arthur",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjE5NjE5Mzk2MV5BMl5BanBnXkFtZTcwODI5MDE1Ng@@._V1_UY317_CR5,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Astrid",
+            lastName: "Bergès-Frisbey",
+            as: "The Mage",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjA3ODUyODkyMV5BMl5BanBnXkFtZTcwMjIxOTUwNw@@._V1_UY317_CR12,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Jude",
+            lastName: "Law",
+            as: "Vortigern",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTMwOTg5NTQ3NV5BMl5BanBnXkFtZTcwNzM3MDAzNQ@@._V1_UY317_CR6,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Djimon",
+            lastName: "Hounsou",
+            as: "Bedivere",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjQ2NTM4MzI4M15BMl5BanBnXkFtZTcwOTkxMjcxNA@@._V1_UY317_CR10,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Eric",
+            lastName: "Bana",
+            as: "Uther",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjcxMzI4OWItN2Y4NS00NDZjLWE3MDEtNTIwYWQyZjdiYjE2L2ltYWdlXkEyXkFqcGdeQXVyNzAxOTAyMDc@._V1_UX214_CR0,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Aidan",
+            lastName: "Gillen",
+            as: "Bill",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjMwNzE4MzMxNl5BMl5BanBnXkFtZTgwOTYwMTEyMDE@._V1_UY317_CR12,0,214,317_AL_.jpg"
+          }
+        ],
+        trailers: [
+          "https://www.youtube.com/embed/4luDtkC3Oy0",
+          "https://www.youtube.com/embed/SX9y5JPuRHY",
+          "https://www.youtube.com/embed/lRXY6C87GPo"
+        ],
+        mainTrailer: "../images/King Arthur Trailer.mp4",
+        experience:{
+          title: "What would you look like holding the sword in the stone?",
+          message: "Press below to create a personalized Arthur movie poster!"
+        }
+      },
+      {
+        id: "3",
+        title: {
+          name: "The Accountant",
+          img: "https://www.assignmentx.com/wp-content/uploads/2016/10/THE-ACCOUNTANT-movie-poster2.png"
+        },
+        director: "Gavin O'Connor",
+        cast: [
+          {
+            firstName: "Ben",
+            lastName: "Affleck",
+            as: "Christian Wolff",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTI4MzIxMTk0Nl5BMl5BanBnXkFtZTcwOTU5NjA0Mg@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Anna",
+            lastName: "Kendrick",
+            as: "Dana Cummings",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjIzOTA0OTQyN15BMl5BanBnXkFtZTcwMjE1OTIwMw@@._V1_UY317_CR5,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "J.K.",
+            lastName: "Simmons",
+            as: "Ray King",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMzg2NTI5NzQ1MV5BMl5BanBnXkFtZTgwNjI1NDEwMDI@._V1_UY317_CR23,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Jon",
+            lastName: "Bernthal",
+            as: "Brax",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTcwNzA5MDg0OV5BMl5BanBnXkFtZTcwMTU2NjE0Nw@@._V1_UY317_CR9,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Jeffrey",
+            lastName: "Tambor",
+            as: "Francis Silverberg",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BNzQxMzA3NzQzM15BMl5BanBnXkFtZTcwMTQxMDc3MQ@@._V1_UY317_CR4,0,214,317_AL_.jpg"
+          },
+          {
+            firstName: "Cynthia",
+            lastName: "Addai-Robinson",
+            as: "Marybeth Medina",
+            img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUzNjQ2MjYwM15BMl5BanBnXkFtZTgwOTYwMjI4OTE@._V1_UY317_CR12,0,214,317_AL_.jpg"
+          }
+        ],
+        trailers: [
+          "https://www.youtube.com/embed/aNGhnNMSopI",
+          "https://www.youtube.com/embed/3KQX2sIhQJY",
+          "https://www.youtube.com/embed/wmKtb-Pvpf4"
+        ],
+        mainTrailer: "../images/The Accountant Trailer.mp4",
+        experience:{
+          title: "See what you would look like behind the desk!",
+          message: "Press below to create a personalized Accountant movie poster!"
+        }
+      }
+    ];
+
+    Polymer({
+
+      is: 'movie-detail-data',
+
+      ready: function() {
+        this.set('selectedMovie', movies[0]);
+        this.set('moviesList', movies);
+      },
+
+      properties: {
+
+        requestedMovie: {
+          type: String,
+          notify: true,
+          observer: '_requestedMovieChanged'
+        },
+
+        selectedMovie: {
+          type: Object,
+          notify: true,
+          observer: '_selectedMovieChanged'
+        },
+
+        moviesList:{
+          type: Array,
+          notify: true
+        }
+      },
+
+      _requestedMovieChanged: function (id) {
+        this.set('moviesList', movies);
+        for (var i = 0; i < this.moviesList.length; i++) {
+          if(this.moviesList[i].id == id){
+            this.set('selectedMovie', this.moviesList[i]);
+            // console.log('DATA - REQUESTED');
+            // console.log(this.moviesList[i]);
+          }
+        }
+      },
+
+      _selectedMovieChanged: function (m) {
+        // console.log("DATA - SELECTED CHANGED");
+        // console.log(m);
+      }
+    });
+
+  })();
+  </script>
+
+</dom-module>

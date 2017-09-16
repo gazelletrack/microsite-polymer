@@ -1,0 +1,38 @@
+{
+  "name": "simple-slider",
+  "version": "0.6.3",
+  "description": "A simple javascript carousel with zero dependencies",
+  "homepage": "http://ruyadorno.github.io/SimpleSlider/",
+  "authors": [
+    "Ruy Adorno"
+  ],
+  "main": "dist/simpleslider.js",
+  "keywords": [
+    "slider",
+    "simple",
+    "gallery",
+    "carousel",
+    "images"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {},
+  "devDependencies": {
+    "requestAnimationFrame": "https://github.com/darius/requestAnimationFrame.git"
+  },
+  "_release": "0.6.3",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.6.3",
+    "commit": "3fafdb40669c4a82076c118c9d8a9c78146ee736"
+  },
+  "_source": "https://github.com/ruyadorno/SimpleSlider.git",
+  "_target": "~0.6.0",
+  "_originalSource": "simple-slider"
+}

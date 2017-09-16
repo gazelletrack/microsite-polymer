@@ -1,0 +1,58 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<dom-module id="social-share">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+    </style>
+
+    <paper-icon-button id="shareFacebook"></paper-icon-button>
+    <paper-icon-button id="shareInstagram"></paper-icon-button>
+    <paper-icon-button id="shareTwitter"></paper-icon-button>
+
+  </template>
+
+  <script>
+    Polymer({
+      is: 'social-share',
+
+      properties:{
+        targetSocialNetwork:{
+          type: String,
+          notify: true,
+          value: "twitter" //Twitter, Instagram, Facebook
+        },
+        mediaUrl:{
+          type: String,
+          notify: true,
+          value: "URL of media"
+        }
+        hashTag:{
+          type: Array,
+          notify: true,
+          value: ["#tag1", "#tag2", "#tag3"]
+        },
+        taggedAccounts:{
+          type: Array,
+          notify: true,
+          value: ["@user1", "@user2"]
+        }
+      },
+
+      _shareToSocial: function () {
+        //get data from properties and post to network listed in targetSocialNetwork
+
+        //open the social app (Twitter, FB, Instagram) if on mobile and if app is installed
+
+        //if it is not mobile or app not install open a brower to social site and setup the post
+
+        //pre-populate the media, hashTag's and taggedAccounts
+      }
+    });
+  </script>
+</dom-module>

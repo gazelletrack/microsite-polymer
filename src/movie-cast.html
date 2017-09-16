@@ -1,0 +1,138 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<link rel="import" href="movie-detail-data.html">
+
+<dom-module id="movie-cast">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      p{
+        font-size: 12px;
+        color: #000000;
+      }
+
+      .cast_members{
+        display: flex;
+        flex-direction: row;
+        overflow: auto;
+        overflow-y: hidden;
+      }
+
+      .cast_member img{
+        height: 150px;
+        width: auto;
+        padding: 5px;
+      }
+
+      .cast_member p{
+        padding: 0 5px;
+      }
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="[[route]]"
+        pattern="/:page/:id"
+        data="{{routeData}}"></app-route>
+
+    <movie-detail-data
+      selected-movie="{{movie}}"
+      requested-movie="{{routeData.id}}"></movie-detail-data>
+
+    <div class="cast_members">
+      <template is="dom-repeat" items="{{cast}}" as="member">
+        <div class="cast_member">
+          <img src="{{member.img}}" alt="">
+          <p>{{member.firstName}}</p>
+          <p>{{member.lastName}}</p>
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'movie-cast',
+
+      properties:{
+        movies: {
+          type: Array,
+          notify: true,
+          value:[
+            {
+              title: "The Accountant",
+              director: "Gavin O'Connor",
+              cast: [
+                {
+                  name: "Ben Affleck",
+                  as: "Christian Wolff",
+                  img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTI4MzIxMTk0Nl5BMl5BanBnXkFtZTcwOTU5NjA0Mg@@._V1_UX214_CR0,0,214,317_AL_.jpg"
+                },
+                {
+                  name: "Anna Kendrick",
+                  as: "Dana Cummings",
+                  img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMjIzOTA0OTQyN15BMl5BanBnXkFtZTcwMjE1OTIwMw@@._V1_UY317_CR5,0,214,317_AL_.jpg"
+                },
+                {
+                  name: "J.K. Simmons",
+                  as: "Ray King",
+                  img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMzg2NTI5NzQ1MV5BMl5BanBnXkFtZTgwNjI1NDEwMDI@._V1_UY317_CR23,0,214,317_AL_.jpg"
+                },
+                {
+                  name: "Jon Bernthal",
+                  as: "Brax",
+                  img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTcwNzA5MDg0OV5BMl5BanBnXkFtZTcwMTU2NjE0Nw@@._V1_UY317_CR9,0,214,317_AL_.jpg"
+                },
+                {
+                  name: "Jeffrey Tambor",
+                  as: "Francis Silverberg",
+                  img: "https://images-na.ssl-images-amazon.com/images/M/MV5BNzQxMzA3NzQzM15BMl5BanBnXkFtZTcwMTQxMDc3MQ@@._V1_UY317_CR4,0,214,317_AL_.jpg"
+                },
+                {
+                  name: "Cynthia Addai-Robinson",
+                  as: "Marybeth Medina",
+                  img: "https://images-na.ssl-images-amazon.com/images/M/MV5BMTUzNjQ2MjYwM15BMl5BanBnXkFtZTgwOTYwMjI4OTE@._V1_UY317_CR12,0,214,317_AL_.jpg"
+                }
+              ],
+              trailers: [
+                "https://www.youtube.com/embed/aNGhnNMSopI",
+                "https://www.youtube.com/embed/3KQX2sIhQJY",
+                "https://www.youtube.com/embed/wmKtb-Pvpf4"
+              ]
+            }
+          ]
+        },
+        movie:{
+          type: Object,
+          notify: true,
+          observer: '_movieChanged'
+        },
+        cast:{
+          type: Array,
+          notify: true,
+          value: []
+        }
+      },
+
+      _movieChanged: function (m) {
+        this.set('cast', this.movie.cast);
+      }
+    });
+  </script>
+</dom-module>

@@ -1,0 +1,75 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<link rel="import" href="movie-detail-data.html">
+
+<dom-module id="my-home">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+        line-height: 0;
+      }
+
+      h3{
+        padding-left: 5px;
+      }
+
+      .movie_title_list{
+        margin: 0;
+        line-height: 0;
+      }
+
+      .movie img{
+        width: 100%;
+        /*height: auto;*/
+      }
+      .title{
+        display: flex;
+        text-align: center;
+        line-height: 1;
+      }
+      h3{
+        margin: 10px auto;
+      }
+    </style>
+
+    <movie-detail-data
+      movies-list="{{movies}}">
+    </movie-detail-data>
+
+    <div class="movie_title_list">
+      <div class="title">
+        <h3>Select film below for your own personalize experience</h3>
+      </div>
+      <template is="dom-repeat" items="{{movies}}" as="movie">
+        <div class="movie">
+          <a href="/movie/[[movie.id]]"><img src="{{movie.title.img}}" alt="">
+        </div>
+      </template>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-home',
+
+      properties:{
+        socketIo:{
+          type: Object,
+          notify: true,
+        }
+      }
+    });
+  </script>
+</dom-module>

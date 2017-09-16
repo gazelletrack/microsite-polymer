@@ -1,0 +1,117 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+
+<dom-module id="my-faceswap">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: block;
+
+        padding: 10px;
+      }
+
+      #socialShare{
+        display: flex;
+        flex-flow: column;
+
+      }
+
+      #socialTitle{
+        margin: auto;
+      }
+
+      #socialIcons{
+        display: flex;
+        flex-flow: row;
+        align-items: center;
+      }
+
+      #socialIcons img{
+        width: auto;
+        height: 75px;
+      }
+      #title{
+        text-align: center;
+      }
+      #snapButton{
+        display: flex;
+        align-items: center;
+      }
+
+      paper-button{
+        background-color: #0000a0;
+        color: #FFFFFF;
+        margin: auto;
+      }
+    </style>
+
+    <firebase-document
+      app-name="comm"
+      path="/snapFace"
+      data="{{snappedFaces}}"></firebase-document>
+
+    <div class="card">
+      <div id="title">
+        <h1>How does it feel to become Arthor?</h1>
+        <p>Place your entire head within the green box and press the button below to see how you would look holding the sword in the stone.</p>
+      </div>
+      <div id="snapButton">
+        <paper-button id="snapFace" raised>Become Arthur</paper-button>
+      </div>
+    </div>
+
+    <div class="card" id="socialShare">
+      <div id="socialTitle">
+        <h3>Share to social media</h3>
+      </div>
+      <div id="socialPoster">
+        <img src="{{poster}}" alt="">
+      </div>
+      <div id="socialIcons">
+        <img src="../images/instagram1.jpg">
+        <img src="../images/twitter.png">
+      </div>
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-faceswap',
+
+      properties:{
+        socketIo:{
+          type: Object,
+          notify: true,
+        },
+        snappedFaces: {
+          type: Boolean,
+          notify: true,
+          value: null
+        }
+      },
+
+      listeners:{
+        'snapFace.tap': '_snapFace'
+      },
+
+      _snapFace: function () {
+        if(this.snappedFaces) this.set('snappedFaces', false);
+        else this.set('snappedFaces', true);
+        console.log("snappedFaces: " + this.snappedFaces);
+        // this.socketIo.emit('snapFace', 'snap face');
+      }
+    });
+  </script>
+</dom-module>

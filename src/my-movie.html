@@ -1,0 +1,184 @@
+<!--
+@license
+Copyright (c) 2016 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="shared-styles.html">
+
+<link rel="import" href="../bower_components/app-route/app-route.html">
+
+<link rel="import" href="movie-cast.html">
+<link rel="import" href="movie-trailer.html">
+<link rel="import" href="movie-detail-data.html">
+
+<link rel="import" href="../bower_components/polymerfire/polymerfire.html">
+
+
+<dom-module id="my-movie">
+  <template>
+    <style include="shared-styles">
+      :host {
+        display: flex;
+        flex-flow: column;
+        line-height: 0;
+        display: block;
+      }
+
+      .titleAd{
+        /*max-height: 20%;*/
+        width: auto;
+      }
+
+      .titleAd img{
+        width: 100%;
+      }
+
+      .titleMovie{
+        /*max-height: 20%;*/
+        width: auto;
+      }
+
+      .titleMovie img{
+        width: 100%;
+      }
+      .card{
+        margin: 5px;
+        padding: 5px;
+      }
+
+      .experience{
+        /*background-color: #88c0e2;*/
+        /*max-height: 30%;*/
+        width: auto;
+        text-align: center;
+        padding: 10px;
+        line-height: 1;
+      }
+
+      .experience paper-button{
+        background: #000050;
+        color: #FFFFFF;
+      }
+
+      .castSelect{
+        /*background-color: #980ccc;*/
+        /*height: 100px;*/
+        /*max-height: 20%;*/
+        width: auto;
+      }
+
+      .trailerSelect{
+        /*background-color: #e20988;*/
+        max-height: 20%;
+        width: auto;
+      }
+
+      .buyTickets{
+        display: flex;
+        flex-flow: column;
+        /*min-height: 150px;*/
+        text-align: center;
+        line-height: 1;
+        /*background-image: url("../images/ticket.png");*/
+        padding: 10px;
+      }
+
+      .buyTickets paper-button{
+        background: #FFFFFF;
+        color: #000000;
+      }
+
+      a{
+        text-decoration: none;
+      }
+
+    </style>
+
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="[[route]]"
+        pattern="/:page/:id"
+        data="{{routeData}}"></app-route>
+
+    <movie-detail-data
+      selected-movie="{{movie}}"
+      requested-movie="{{routeData.id}}"></movie-detail-data>
+
+    <firebase-document
+      app-name="comm"
+      path="/requestExperience"
+      data="{{requestExperience}}"></firebase-document>
+
+
+    <div class="titleMovie">
+      <img src="{{movie.title.img}}" alt="">
+    </div>
+    <div class="experience card">
+      <h1>{{movie.experience.title}}</h1>
+      <h3>{{movie.experience.message}}</h3>
+      <a href="/faceswap">
+        <paper-button id="experienceLaunch" raised>Exclusive Movie Poster</paper-button>
+      </a>
+    </div>
+    <div class="titleAd">
+      <img src="/images/coke_banner.jpg" alt="">
+    </div>
+    <div class="castSelect card">
+      <p>Cast:</p>
+      <movie-cast></movie-cast>
+    </div>
+    <div class="titleMovie">
+      <img src="{{movie.title.img}}" alt="">
+    </div>
+    <div class="buyTickets">
+      <p>Opens July 1st click here to buy advaced tickets</p>
+      <a href="/tickets">
+        <paper-button id="buyTicketsLaunch" raised>Buy Tickets Now</paper-button>
+      </a>
+    </div>
+    <div class="trailerSelect card" >
+      <p>Trailers:</p>
+      <movie-trailer></movie-trailer>
+    </div>
+    <div class="titleAd">
+      <img src="/images/coke_banner.jpg" alt="">
+    </div>
+  </template>
+
+  <script>
+    Polymer({
+      is: 'my-movie',
+
+      properties:{
+        socketIo:{
+          type: Object,
+          notify: true,
+        }
+      },
+
+      listeners:{
+        'experienceLaunch.tap': '_launchExperience',
+      },
+
+      _requestExperienceChanged: function (req) {
+        console.log('my-movie - requestExperience: ' + req);
+      },
+
+      _launchExperience: function () {
+        document.querySelector('mobile-app').set('requestExperience', 'start');
+        // this.socketIo.emit('requestExperience', this.routeData);
+      },
+
+      ready: function () {
+        console.log('my movie ready!');
+        document.querySelector('mobile-app').set('requestExperience', 'end');
+      }
+    });
+  </script>
+</dom-module>

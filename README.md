@@ -1,1 +1,1 @@
-# mircosite-polymer
+Micro-site for GOT experience

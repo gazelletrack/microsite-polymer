@@ -1,0 +1,31 @@
+{
+  "name": "polymer-starter-kit",
+  "license": "BSD-3-Clause",
+  "devDependencies": {
+    "eslint": "^3.12.0",
+    "eslint-config-google": "^0.7.1",
+    "eslint-plugin-html": "^1.7.0"
+  },
+  "dependencies": {
+    "body-parser": "~1.15.2",
+    "bower": "^1.8.0",
+    "cookie-parser": "~1.4.3",
+    "debug": "~2.2.0",
+    "eslint": "^3.12.0",
+    "eslint-config-google": "^0.7.1",
+    "eslint-plugin-html": "^1.7.0",
+    "express": "~4.14.0",
+    "fs": "0.0.1-security",
+    "https": "^1.0.0",
+    "morgan": "~1.7.0",
+    "redis": "^2.7.1",
+    "serve-favicon": "~2.3.0",
+    "socketio": "^1.0.0"
+  },
+  "scripts": {
+    "start": "node ./bin/www",
+    "postinstall": "./node_modules/bower/bin/bower install -F",
+    "lint": "eslint . --ext js,html --ignore-path .gitignore",
+    "test": "npm run lint && polymer test"
+  }
+}

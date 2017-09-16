@@ -1,0 +1,26 @@
+{
+  "entrypoint": "index.html",
+  "shell": "src/mobile/mobile-home.html",
+  "fragments": [
+    "src/my-home.html",
+    "src/my-movie.html",
+    "src/my-faceswap.html",
+    "src/my-tickets.html",
+    "src/message-admin.html",
+    "src/my-view2.html",
+    "src/my-view3.html",
+    "src/my-view404.html",
+    "src/movie-cast.html",
+    "src/movie-trailer.html",
+    "src/movie-detail-data.html"
+  ],
+  "sourceGlobs": [
+    "src/**/*",
+    "images/**/*",
+    "bower.json"
+  ],
+  "includeDependencies": [
+    "manifest.json",
+    "bower_components/webcomponentsjs/webcomponents-lite.min.js"
+  ]
+}
